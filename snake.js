@@ -10,6 +10,7 @@ function snake(start_length) {
     for (var i = 1; i < start_length; ++i) {
       this.body.push({x: i - 1, y: 0});
     }
+    this.last_direction = 'RIGHT';
 }
 
 snake.prototype.draw = function(renderer) {
@@ -20,15 +21,10 @@ snake.prototype.draw = function(renderer) {
     }
 };
 
-snake.prototype.move = function(direction) {
-    if (direction != 'UP' && direction != 'LEFT' && direction != 'DOWN' &&
-        direction != 'RIGHT') {
-        return;
-    }
-
+snake.prototype.move = function() {
     this.body.push({x: this.head.x, y: this.head.y});
 
-    switch (direction) {
+    switch (this.last_direction) {
       case 'UP':    this.head.y -= 1; break;
       case 'LEFT':  this.head.x -= 1; break;
       case 'DOWN':  this.head.y += 1; break;
@@ -38,3 +34,17 @@ snake.prototype.move = function(direction) {
 
     this.body.shift();
 };
+
+snake.prototype.set_direction = function(direction) {
+    var change_direction = false;
+    switch (direction) {
+      case 'UP':    change_direction = this.last_direction != 'DOWN'; break;
+      case 'LEFT':  change_direction = this.last_direction != 'RIGHT'; break;
+      case 'DOWN':  change_direction = this.last_direction != 'UP'; break;
+      case 'RIGHT': change_direction = this.last_direction != 'LEFT'; break;
+      default: break;
+    }
+    if (change_direction) {
+        this.last_direction = direction;
+    }
+}
