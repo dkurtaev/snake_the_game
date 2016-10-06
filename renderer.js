@@ -11,6 +11,9 @@ renderer.prototype.addSymbol = function(character, x, y) {
 };
 
 renderer.prototype.draw = function(element_id) {
+    // Number of symbols exclude borders.
+    var VIEW_HEIGHT = 22;
+
     // Sorting symbols by rows and each row inside by columns (from top to
     // buttom, from left to right).
     var comparator = function(first, second) {
@@ -31,27 +34,25 @@ renderer.prototype.draw = function(element_id) {
     // Printing symbols. Printing whitespaces between symbols at the same
     // row and line breaks between different rows.
     var row = 0, col = 0;
-    var rendered = "<pre>";
+    var rendered = "";
     var n_symbols = this.symbols.length;
 
     for (var i = 0; i < n_symbols; ++i) {
         var symbol = this.symbols[i];
-
-        while (row != symbol.position.y) {
-            rendered += "<br>";
-            ++row;
+        if (row != symbol.position.y) {
+            rendered += "<br>".repeat(symbol.position.y - row);
+            row = symbol.position.y;
             col = 0;
         }
-        while (col != symbol.position.x) {
-            rendered += " ";
-            ++col;
-        }
-        rendered += symbol.character;
-        ++col;
+        rendered += " ".repeat(symbol.position.x - col) + symbol.character;
+        col = symbol.position.x + 1;
     }
 
     // Remove all points for next drawing.
     this.symbols = [];
 
-    document.getElementById(element_id).innerHTML = rendered + "</pre>";
+    // Add empty lines.
+    rendered += "<br>".repeat(VIEW_HEIGHT - row);
+
+    document.getElementById(element_id).innerHTML = rendered;
 };
