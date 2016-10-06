@@ -5,11 +5,46 @@ function game(view_id) {
     // Score - number of picked diamonds.
     self.score = 0;
     // Time in milliseconds between game iterations.
-    self.intervals = 100;
+    self.delay = 100;
     self.snake = new snake(INITIAL_SNAKE_LENGTH);
     self.renderer = new renderer();
 
     self.step = function() {
+        var VIEW_HEIGHT = 22;
+        var VIEW_WIDTH = 78;
+
+        switch (self.snake.last_direction) {
+          case 'UP':
+              if (self.snake.head.y == 0) {
+                  window.alert('end');
+                  clearInterval(self.interval);
+                  return;
+              }
+              break;
+          case 'LEFT':
+              if (self.snake.head.x == 0) {
+                  window.alert('end');
+                  clearInterval(self.interval);
+                  return;
+              }
+              break;
+          case 'DOWN':
+              if (self.snake.head.y == VIEW_HEIGHT - 1) {
+                  window.alert('end');
+                  clearInterval(self.interval);
+                  return;
+              }
+              break;
+          case 'RIGHT':
+              if (self.snake.head.x == VIEW_WIDTH - 1) {
+                  window.alert('end');
+                  clearInterval(self.interval);
+                  return;
+              }
+              break;
+          default: break;
+        }
+
         self.snake.move();
         self.snake.draw(self.renderer);
         self.renderer.draw(view_id);
@@ -26,7 +61,7 @@ function game(view_id) {
     }
 
     self.start = function() {
-        setInterval(self.step, self.intervals);
+        self.interval = setInterval(self.step, self.delay);
     };
 
 }

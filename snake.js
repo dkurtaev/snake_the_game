@@ -37,6 +37,17 @@ snake.prototype.move = function() {
 
 snake.prototype.set_direction = function(direction) {
     var change_direction = false;
+
+    // We need to compute last direction due head position because this
+    // function might be called not once per iteration.
+    var before_head = this.body[this.body.length - 1];
+    var diff_y = this.head.y - before_head.y;
+    if (diff_y != 0) {
+        this.last_direction = (diff_y > 0 ? 'DOWN' : 'UP');
+    } else {
+      this.last_direction = (this.head.x > before_head.x ? 'RIGHT' : 'LEFT');
+    }
+
     switch (direction) {
       case 'UP':    change_direction = this.last_direction != 'DOWN'; break;
       case 'LEFT':  change_direction = this.last_direction != 'RIGHT'; break;
