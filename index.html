@@ -11,11 +11,20 @@
     try {
         var myRenderer = new renderer();
         var mySnake = new snake(5);
-        mySnake.move('DOWN');
-        mySnake.move('DOWN');
-        mySnake.move('LEFT');
         mySnake.draw(myRenderer);
         myRenderer.draw("field");
+
+        document.onkeydown = function(event) {
+            switch (event.keyCode) {
+              case 37: mySnake.move('LEFT'); break;
+              case 38: mySnake.move('UP'); break;
+              case 39: mySnake.move('RIGHT'); break;
+              case 40: mySnake.move('DOWN'); break;
+              default: break;
+            }
+            mySnake.draw(myRenderer);
+            myRenderer.draw("field");
+        }
     } catch (err) {
         window.alert(err.message);
     }

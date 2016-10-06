@@ -49,6 +49,9 @@ function renderer() {
             ++col;
         }
 
+        // Remove all points for next drawing.
+        this.symbols = [];
+
         document.getElementById(element_id).innerHTML = rendered + "</pre>";
     };
 }
