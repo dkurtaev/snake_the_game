@@ -2,29 +2,18 @@
 <html>
 <body>
 
-<p id="field"></p>
+<p id="game_view"></p>
 
-<script src="renderer.js"></script>
+<script src="game.js"></script>
 <script src="snake.js"></script>
+<script src="renderer.js"></script>
 
 <script>
-    try {
-        var myRenderer = new renderer();
-        var mySnake = new snake(5);
-        mySnake.draw(myRenderer);
-        myRenderer.draw("field");
 
-        document.onkeydown = function(event) {
-            switch (event.keyCode) {
-              case 37: mySnake.move('LEFT'); break;
-              case 38: mySnake.move('UP'); break;
-              case 39: mySnake.move('RIGHT'); break;
-              case 40: mySnake.move('DOWN'); break;
-              default: break;
-            }
-            mySnake.draw(myRenderer);
-            myRenderer.draw("field");
-        }
+    try {
+      var game = new game("game_view");
+      document.onkeydown = game.onkeydown;
+      game.start();
     } catch (err) {
         window.alert(err.message);
     }
