@@ -4,8 +4,18 @@
 
 <p id="field"></p>
 
+<script src="renderer.js"></script>
+
 <script>
-  document.getElementById("field").innerHTML = "Hello!";
+    try {
+        var myRenderer = new renderer();
+        myRenderer.addSymbol('*', 0, 0);
+        myRenderer.addSymbol('*', 3, 1);
+        myRenderer.addSymbol('*', 1, 3);
+        myRenderer.draw("field");
+    } catch (err) {
+        window.alert(err.message);
+    }
 </script>
 
 </body>
