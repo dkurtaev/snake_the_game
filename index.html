@@ -5,13 +5,16 @@
 <p id="field"></p>
 
 <script src="renderer.js"></script>
+<script src="snake.js"></script>
 
 <script>
     try {
         var myRenderer = new renderer();
-        myRenderer.addSymbol('*', 0, 0);
-        myRenderer.addSymbol('*', 3, 1);
-        myRenderer.addSymbol('*', 1, 3);
+        var mySnake = new snake(5);
+        mySnake.move('DOWN');
+        mySnake.move('DOWN');
+        mySnake.move('LEFT');
+        mySnake.draw(myRenderer);
         myRenderer.draw("field");
     } catch (err) {
         window.alert(err.message);
