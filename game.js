@@ -54,7 +54,7 @@ function game(view_id) {
         if (self.snake.head.x == self.diamond.x &&
             self.snake.head.y == self.diamond.y) {
             self.score += 1;
-            self.snake.eatDiamond(self.diamond.x, self.diamond.y);
+            self.snake.eatDiamond();
             var x, y;
             do {
                 x = 1 + Math.floor(Math.random() * (VIEW_WIDTH - 2));

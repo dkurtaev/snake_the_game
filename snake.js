@@ -5,10 +5,14 @@ function snake(start_length) {
     // |======>     |
     // |            |
     // +------------+
-    this.head = {x: start_length - 1, y: 0};
+    this.head = {x: start_length - 1, y: 0, has_diamond: false};
     this.body = [];
     for (var i = 1; i < start_length; ++i) {
-      this.body.push({x: i - 1, y: 0});
+        // Each part of body has flag 'has_diamond' for trackng snake growing.
+        // ooOoo@
+        //   \
+        //    this part has diamond inside.
+        this.body.push({x: i - 1, y: 0, has_diamond: false});
     }
     this.last_direction = 'RIGHT';
 };
@@ -17,12 +21,14 @@ snake.prototype.draw = function(renderer) {
     var length = this.body.length;
     renderer.addSymbol('@', this.head.x, this.head.y);
     for (var i = 0; i < length; ++i) {
-      renderer.addSymbol('o', this.body[i].x, this.body[i].y);
+      var symbol = (this.body[i].has_diamond ? 'O' : 'o');
+      renderer.addSymbol(symbol, this.body[i].x, this.body[i].y);
     }
 };
 
 snake.prototype.move = function() {
-    this.body.push({x: this.head.x, y: this.head.y});
+    this.body.push({x: this.head.x, y: this.head.y,
+                    has_diamond: this.head.has_diamond});
 
     switch (this.last_direction) {
       case 'UP':    this.head.y -= 1; break;
@@ -31,8 +37,13 @@ snake.prototype.move = function() {
       case 'RIGHT': this.head.x += 1; break;
       default: break;
     }
+    this.head.has_diamond = false;
 
-    this.body.shift();
+    if (!this.body[0].has_diamond) {
+        this.body.shift();
+    } else {
+        this.body[0].has_diamond = false;
+    }
 };
 
 snake.prototype.setDirection = function(direction) {
@@ -60,8 +71,8 @@ snake.prototype.setDirection = function(direction) {
     }
 };
 
-snake.prototype.eatDiamond = function(diamond_x, diamond_y) {
-
+snake.prototype.eatDiamond = function() {
+    this.head.has_diamond = true;
 }
 
 // Returns true is point (x, y) is a snake body or head.
