@@ -3,10 +3,7 @@ function renderer() {
 }
 
 renderer.prototype.addSymbol = function(character, x, y) {
-    var symbol = {
-        character: character,
-        position: {x: x, y: y}
-    };
+    var symbol = { character: character, x: x, y: y };
     this.symbols.push(symbol);
 };
 
@@ -17,11 +14,11 @@ renderer.prototype.draw = function(element_id) {
     // Sorting symbols by rows and each row inside by columns (from top to
     // buttom, from left to right).
     var comparator = function(first, second) {
-        var diff_y = first.position.y - second.position.y;
+        var diff_y = first.y - second.y;
         if (diff_y != 0) {
             return (diff_y < 0 ? -1 : 1);
         } else {
-            var diff_x = first.position.x - second.position.x;
+            var diff_x = first.x - second.x;
             if (diff_x != 0) {
                 return (diff_x < 0 ? -1 : 1);
             } else {
@@ -39,13 +36,13 @@ renderer.prototype.draw = function(element_id) {
 
     for (var i = 0; i < n_symbols; ++i) {
         var symbol = this.symbols[i];
-        if (row != symbol.position.y) {
-            rendered += "<br>".repeat(symbol.position.y - row);
-            row = symbol.position.y;
+        if (row != symbol.y) {
+            rendered += "<br>".repeat(symbol.y - row);
+            row = symbol.y;
             col = 0;
         }
-        rendered += " ".repeat(symbol.position.x - col) + symbol.character;
-        col = symbol.position.x + 1;
+        rendered += " ".repeat(symbol.x - col) + symbol.character;
+        col = symbol.x + 1;
     }
 
     // Remove all points for next drawing.
