@@ -11,7 +11,7 @@ function snake(start_length) {
       this.body.push({x: i - 1, y: 0});
     }
     this.last_direction = 'RIGHT';
-}
+};
 
 snake.prototype.draw = function(renderer) {
     var length = this.body.length;
@@ -35,7 +35,7 @@ snake.prototype.move = function() {
     this.body.shift();
 };
 
-snake.prototype.set_direction = function(direction) {
+snake.prototype.setDirection = function(direction) {
     var change_direction = false;
 
     // We need to compute last direction due head position because this
@@ -58,4 +58,22 @@ snake.prototype.set_direction = function(direction) {
     if (change_direction) {
         this.last_direction = direction;
     }
+};
+
+snake.prototype.eatDiamond = function(diamond_x, diamond_y) {
+
+}
+
+// Returns true is point (x, y) is a snake body or head.
+snake.prototype.hasPoint = function(x, y) {
+    if (this.head.x != x || this.head.y != y) {
+        for (var i = 0, l = this.body.length; i < l; ++i) {
+            if (this.body[i].x == x && this.body[i].y == y) {
+                return true;
+            }
+        }
+    } else {
+        return true;
+    }
+    return false;
 }
