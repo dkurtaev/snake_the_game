@@ -64,57 +64,21 @@ function game(view_id) {
     self.gameEnd = function() {
         clearInterval(self.interval);
 
-        // Receive records table.
-        var url = "https://www.friendpaste.com/1xoaeSRMPIyZWHc7ob7Vjo";
-        var xhr = new XMLHttpRequest();
+        var records_table = new recordsTable();
 
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                // Parsing records table.
-                var records = JSON.parse(this.responseText).snippet;
-                records = records.split('\n');
-                var n_records = records.length;
-                for (var i = 0; i < n_records; ++i) {
-                    records[i] = JSON.parse(records[i]);
-                }
-
-                // Check new record.
-                if (self.score > records[n_records - 1].score) {
-                    // Receive player's name.
-                    var name = undefined;
-                    do {
-                      name = prompt("New record! Please enter your name:");
-                    } while (name == null || name.length < 2 ||
-                             name.length > 20);
-                    records.push({name: name, score: self.score});
-
-                    // Sorting records in ascending order.
-                    var comparator = function(first, second) {
-                        return second.score - first.score;
-                    };
-                    records.sort(comparator);
-
-                    // Update remote table.
-                    var data = {
-                        "title": "Records table",
-                        "snippet": JSON.stringify(records[0]),
-                        "language": "text"
-                    };
-
-                    for (var i = 1; i < n_records; ++i) {
-                        data.snippet += "\n" + JSON.stringify(records[i]);
-                    }
-
-                    xhr.open("PUT", url, true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.send(JSON.stringify(data));
-                }
+        var new_record_process = function(records) {
+            var n_records = records.length;
+            if (self.score > records[n_records - 1].score) {
+                // Receive player's name.
+                var name = undefined;
+                do {
+                  name = prompt("New record! Please enter your name:");
+                } while (name == null || name.length < 2 ||
+                         name.length > 20);
+                records_table.add(name, self.score);
             }
         };
 
-        xhr.open("GET", url, true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
-    };
-
-}
+        records_table.process(new_record_process);
+    }
+};
