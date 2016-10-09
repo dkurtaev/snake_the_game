@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Snake, The Game</title>
+
+  <script src="records_table.js"></script>
+</head>
+
+<body>
+
+<pre id="records"></pre>
+
+<script>
+    var records_table = new recordsTable();
+    var table_printer = function(records) {
+        var output = '<table cellpadding="10">';
+        var n_records = records.length;
+        for (var i = 0; i < n_records; ++i) {
+            output += "<tr><td>" + records[i].name + "</td>" +
+                          "<td>" + records[i].score + "</td></tr>";
+        }
+        output += "</table>";
+        document.getElementById("records").innerHTML = output;
+    };
+
+    records_table.process(table_printer);
+</script>
+
+</body>
+
+</html>
