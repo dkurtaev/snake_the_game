@@ -22,7 +22,7 @@ function game(view_id) {
         var head_y = self.snake.head.y;
         if (dir == 'UP' && head_y == 0 ||
             dir == 'LEFT' && head_x == 0 ||
-            dir == 'ROWN' && head_y == VIEW_HEIGHT - 1 ||
+            dir == 'DOWN' && head_y == VIEW_HEIGHT - 1 ||
             dir == 'RIGHT' && head_x == VIEW_WIDTH - 1) {
             self.gameEnd();
             return;
@@ -80,15 +80,17 @@ function game(view_id) {
 
                 // Check new record.
                 if (self.score > records[n_records - 1].score) {
-                    records.push({name: "player", score: self.score});
+                    // Receive player's name.
+                    var name = undefined;
+                    do {
+                      name = prompt("New record! Please enter your name:");
+                    } while (name == null || name.length < 2 ||
+                             name.length > 20);
+                    records.push({name: name, score: self.score});
 
                     // Sorting records in ascending order.
                     var comparator = function(first, second) {
-                        if (first.score != second.score) {
-                            return (first.score < second.score ? 1 : -1);
-                        } else {
-                            return 0;
-                        }
+                        return second.score - first.score;
                     };
                     records.sort(comparator);
 
