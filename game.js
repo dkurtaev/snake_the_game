@@ -17,36 +17,15 @@ function game(view_id) {
         var VIEW_HEIGHT = 22;
         var VIEW_WIDTH = 78;
 
-        switch (self.snake.last_direction) {
-          case 'UP':
-              if (self.snake.head.y == 0) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'LEFT':
-              if (self.snake.head.x == 0) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'DOWN':
-              if (self.snake.head.y == VIEW_HEIGHT - 1) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'RIGHT':
-              if (self.snake.head.x == VIEW_WIDTH - 1) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          default: break;
+        var dir = self.snake.last_direction;
+        var head_x = self.snake.head.x;
+        var head_y = self.snake.head.y;
+        if (dir == 'UP' && head_y == 0 ||
+            dir == 'LEFT' && head_x == 0 ||
+            dir == 'ROWN' && head_y == VIEW_HEIGHT - 1 ||
+            dir == 'RIGHT' && head_x == VIEW_WIDTH - 1) {
+            self.gameEnd();
+            return;
         }
 
         self.snake.move();
@@ -80,6 +59,60 @@ function game(view_id) {
 
     self.start = function() {
         self.interval = setInterval(self.step, self.delay);
+    };
+
+    self.gameEnd = function() {
+        clearInterval(self.interval);
+
+        // Receive records table.
+        var url = "https://www.friendpaste.com/1xoaeSRMPIyZWHc7ob7Vjo";
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Parsing records table.
+                var records = JSON.parse(this.responseText).snippet;
+                records = records.split('\n');
+                var n_records = records.length;
+                for (var i = 0; i < n_records; ++i) {
+                    records[i] = JSON.parse(records[i]);
+                }
+
+                // Check new record.
+                if (self.score > records[n_records - 1].score) {
+                    records.push({name: "player", score: self.score});
+
+                    // Sorting records in ascending order.
+                    var comparator = function(first, second) {
+                        if (first.score != second.score) {
+                            return (first.score < second.score ? 1 : -1);
+                        } else {
+                            return 0;
+                        }
+                    };
+                    records.sort(comparator);
+
+                    // Update remote table.
+                    var data = {
+                        "title": "Records table",
+                        "snippet": JSON.stringify(records[0]),
+                        "language": "text"
+                    };
+
+                    for (var i = 1; i < n_records; ++i) {
+                        data.snippet += "\n" + JSON.stringify(records[i]);
+                    }
+
+                    xhr.open("PUT", url, true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify(data));
+                }
+            }
+        };
+
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.send();
     };
 
 }
