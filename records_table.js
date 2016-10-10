@@ -25,17 +25,19 @@ recordsTable.prototype.add = function(player_name, score) {
     var self = this;
 
     var add_record_process = function(records) {
-        // Add new record.
-        records.push({
-            "name": player_name,
-            "score": score
-        });
+        var n_records = records.length;
 
-        // Sorting records in ascending order.
-        var comparator = function(first, second) {
-            return second.score - first.score;
-        };
-        records.sort(comparator);
+        // Add new record.
+        for (var i = n_records; i >= 1; --i) {
+            if (score <= records[i - 1].score) {
+                records.splice(i, 0, {"name": player_name, "score": score});
+                break;
+            }
+        }
+        // If new score is greater than all exists scores.
+        if (records.length == n_records) {
+            records.splice(0, 0, {"name": player_name, "score": score});
+        }
 
         // Update remote table.
         var data = {
@@ -44,7 +46,6 @@ recordsTable.prototype.add = function(player_name, score) {
             "language": "text"
         };
 
-        var n_records = records.length;
         for (var i = 1; i < n_records; ++i) {
             data.snippet += "\n" + JSON.stringify(records[i]);
         }

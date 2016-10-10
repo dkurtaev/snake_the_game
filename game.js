@@ -56,7 +56,7 @@ function game(view_id) {
         if (dir == 'LEFT' || dir == 'RIGHT') {
             self.interval = setInterval(self.step, self.delay);
         } else {
-          self.interval = setInterval(self.step, 1.25 * self.delay);
+            self.interval = setInterval(self.step, 1.25 * self.delay);
         }
     };
 
