@@ -31,7 +31,7 @@ function game(view_id) {
 
         self.snake.move();
         if (self.snake.isBody(self.snake.head.x, self.snake.head.y)) {
-            window.alert("Self intersection");
+            self.gameEnd();
             return;
         }
 
@@ -81,6 +81,8 @@ function game(view_id) {
                 } while (name == null || name.length < 2 ||
                          name.length > 20);
                 records_table.add(name, self.score);
+            } else {
+                window.alert("Game is over. Smile and try again!");
             }
         };
 
