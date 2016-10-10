@@ -12,41 +12,21 @@ function game(view_id) {
     self.renderer = new renderer();
     self.diamond = {x: 1 + Math.floor(Math.random() * (VIEW_WIDTH - 2)),
                     y: 1 + Math.floor(Math.random() * (VIEW_HEIGHT - 2))};
+    self.renderer.draw(view_id);
 
     self.step = function() {
         var VIEW_HEIGHT = 22;
         var VIEW_WIDTH = 78;
 
-        switch (self.snake.last_direction) {
-          case 'UP':
-              if (self.snake.head.y == 0) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'LEFT':
-              if (self.snake.head.x == 0) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'DOWN':
-              if (self.snake.head.y == VIEW_HEIGHT - 1) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          case 'RIGHT':
-              if (self.snake.head.x == VIEW_WIDTH - 1) {
-                  window.alert('end');
-                  clearInterval(self.interval);
-                  return;
-              }
-              break;
-          default: break;
+        var dir = self.snake.last_direction;
+        var head_x = self.snake.head.x;
+        var head_y = self.snake.head.y;
+        if (dir == 'UP' && head_y == 0 ||
+            dir == 'LEFT' && head_x == 0 ||
+            dir == 'DOWN' && head_y == VIEW_HEIGHT - 1 ||
+            dir == 'RIGHT' && head_x == VIEW_WIDTH - 1) {
+            self.gameEnd();
+            return;
         }
 
         self.snake.move();
@@ -86,4 +66,24 @@ function game(view_id) {
         self.interval = setInterval(self.step, self.delay);
     };
 
-}
+    self.gameEnd = function() {
+        clearInterval(self.interval);
+
+        var records_table = new recordsTable();
+
+        var new_record_process = function(records) {
+            var n_records = records.length;
+            if (self.score > records[n_records - 1].score) {
+                // Receive player's name.
+                var name = undefined;
+                do {
+                  name = prompt("New record! Please enter your name:");
+                } while (name == null || name.length < 2 ||
+                         name.length > 20);
+                records_table.add(name, self.score);
+            }
+        };
+
+        records_table.process(new_record_process);
+    }
+};
