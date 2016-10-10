@@ -30,6 +30,10 @@ function game(view_id) {
         }
 
         self.snake.move();
+        if (self.snake.isBody(self.snake.head.x, self.snake.head.y)) {
+            self.gameEnd();
+            return;
+        }
 
         if (self.snake.head.x == self.diamond.x &&
             self.snake.head.y == self.diamond.y) {
@@ -77,6 +81,8 @@ function game(view_id) {
                 } while (name == null || name.length < 2 ||
                          name.length > 20);
                 records_table.add(name, self.score);
+            } else {
+                window.alert("Game is over. Smile and try again!");
             }
         };
 
