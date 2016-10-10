@@ -50,6 +50,14 @@ function game(view_id) {
         self.snake.draw(self.renderer);
         self.renderer.addSymbol('*', self.diamond.x, self.diamond.y);
         self.renderer.draw(view_id);
+
+        clearInterval(self.interval);
+        self.delay = 100.0 * Math.exp(-self.score / 200.0);
+        if (dir == 'LEFT' || dir == 'RIGHT') {
+            self.interval = setInterval(self.step, self.delay);
+        } else {
+          self.interval = setInterval(self.step, 1.25 * self.delay);
+        }
     };
 
     self.onkeydown = function(event) {
