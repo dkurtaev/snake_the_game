@@ -5,54 +5,43 @@
   <title>Snake, The Game</title>
 
   <style type="text/css">
-  pre {
-      padding: 0;
-      margin: 0;
-  }
+    pre {
+        padding: 0;
+        margin: 0;
+    }
   </style>
-
-  <script src="game.js"></script>
-  <script src="snake.js"></script>
-  <script src="renderer.js"></script>
-  <script src="records_table.js"></script>
 </head>
 
 <body>
 
-<table cellspacing="0", cellpadding="0">
-  <tr>
-    <td>
-      <pre id="game_view_left"></pre>
-    </td>
+<table>
+  <tr><td>
+    <pre>
+                     __
+      _______       (  \  _____
+    /   _____)       \  \/ ___ \   _______
+   (   (  _______ ____)   (   \_) /   __  \
+    \   \/       ) ___ (   \____ (   (__)  )
+     )   )      / (___) \   ___ \ \      /
+ ___/   /  /)  (         \  \  \ \ \   ( __
+(______/__//__/ \_____/\__)__)  \_) \______)
+    </pre>
+  </td></tr>
 
-    <td valign="top">
-      <pre id="game_view_top"></pre>
-      <pre id="game_view"></pre>
-      <pre id="game_view_bottom"></pre>
-    </td>
+  <tr><td align="center">
+    <a href="game.html" style="text-decoration:none;">
+      <pre>Play</pre>
+    </a>
+  </td></tr>
 
-    <td>
-      <pre id="game_view_right"></pre>
-    </td>
-  </tr>
+  <tr><td align="center">
+    <a href="records_table.html" style="text-decoration:none;">
+      <pre>Records</pre>
+    </a>
+  </td></tr>
+
 </table>
 
-<script>
-  document.getElementById("game_view_top").innerHTML = "#".repeat(78);
-  document.getElementById("game_view_bottom").innerHTML = "#".repeat(78);
-  document.getElementById("game_view_left").innerHTML = "#<br>".repeat(24);
-  document.getElementById("game_view_right").innerHTML = "#<br>".repeat(24);
-</script>
-
-<script>
-    try {
-      var game = new game("game_view");
-      document.onkeydown = game.onkeydown;
-      game.start();
-    } catch (err) {
-        window.alert(err.message);
-    }
-</script>
-
 </body>
+
 </html>

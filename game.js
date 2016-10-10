@@ -12,6 +12,7 @@ function game(view_id) {
     self.renderer = new renderer();
     self.diamond = {x: 1 + Math.floor(Math.random() * (VIEW_WIDTH - 2)),
                     y: 1 + Math.floor(Math.random() * (VIEW_HEIGHT - 2))};
+    self.renderer.draw(view_id);
 
     self.step = function() {
         var VIEW_HEIGHT = 22;
