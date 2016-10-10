@@ -73,18 +73,24 @@ snake.prototype.setDirection = function(direction) {
 
 snake.prototype.eatDiamond = function() {
     this.head.has_diamond = true;
-}
+};
 
 // Returns true is point (x, y) is a snake body or head.
 snake.prototype.hasPoint = function(x, y) {
     if (this.head.x != x || this.head.y != y) {
-        for (var i = 0, l = this.body.length; i < l; ++i) {
-            if (this.body[i].x == x && this.body[i].y == y) {
-                return true;
-            }
-        }
+        return this.isBody(x, y);
     } else {
         return true;
     }
+};
+
+// Returns true if point (x, y) is a part of snake's body (exclude head).
+// Using for detect self-intersections.
+snake.prototype.isBody = function(x, y) {
+    for (var i = 0, l = this.body.length; i < l; ++i) {
+        if (this.body[i].x == x && this.body[i].y == y) {
+            return true;
+        }
+    }
     return false;
-}
+};

@@ -50,6 +50,10 @@ function game(view_id) {
         }
 
         self.snake.move();
+        if (self.snake.isBody(self.snake.head.x, self.snake.head.y)) {
+            window.alert("Self intersection");
+            return;
+        }
 
         if (self.snake.head.x == self.diamond.x &&
             self.snake.head.y == self.diamond.y) {
