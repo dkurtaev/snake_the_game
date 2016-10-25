@@ -1,5 +1,6 @@
 function recordsTable() {
-    this.url = "https://www.friendpaste.com/1xoaeSRMPIyZWHc7ob7Vjo";
+    this.url = window.atob('aHR0cHM6Ly93d3cuZnJpZW5kcGFzdGUuY29t' +
+                           'LzF4b2FlU1JNUEl5WldIYzdvYjdWam8=');
     this.xhr = new XMLHttpRequest();
 };
 
