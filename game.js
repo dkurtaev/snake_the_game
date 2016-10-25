@@ -86,7 +86,7 @@ function game(view_id) {
                 var name = undefined;
                 do {
                   name = prompt("New record! Please enter your name:");
-                } while (name == null || name.length < 2 ||
+                } while (name === null || name.length < 2 ||
                          name.length > 20);
                 records_table.add(name, self.score);
             } else {
